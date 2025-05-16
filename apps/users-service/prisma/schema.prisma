@@ -1,0 +1,55 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native"]
+  output        = "../../../node_modules/@prisma/users-client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  id         String    @id @db.Uuid()
+  login      String    @unique
+  email      String    @unique
+  password   String
+  age        Int
+  balance    Decimal   @default(0) @db.Decimal(10, 2)
+  about      String?
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+  avatars    avatars[]
+}
+
+model transactions {
+  id           String   @id @db.Uuid()
+  from_user_id String?  @db.Uuid()
+  to_user_id   String   @db.Uuid()
+  amount       Decimal  @default(0) @db.Decimal(10, 2)
+  type         String
+  created_at   DateTime @default(now())
+}
+
+model avatars {
+  id         String    @id @db.Uuid()
+  user       users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id    String    @db.Uuid()
+  path       String
+  active     Boolean
+  deleted_at DateTime?
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+}
+
+model transactions_outbox {
+  id           BigInt    @id @default(autoincrement())
+  event_name   String
+  payload      Json
+  status       String
+  created_at   DateTime  @default(now())
+  published_at DateTime?
+
+  @@index([status])
+}
