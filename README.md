@@ -1,6 +1,6 @@
 Here's the English translation of the provided text:
 
-# Nest-auth
+# nest-microservices-with-nats
 
 ## Prerequisites
 
