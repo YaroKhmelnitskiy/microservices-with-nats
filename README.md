@@ -1,80 +1,77 @@
+Here's the English translation of the provided text:
+
 # Nest-auth
 
-## Перед запуском
+## Prerequisites
 
-1. Иметь pnpm для dev и test (prod можно запустить просто в контейнерах)
+1.  Have `pnpm` installed for development and testing (production can be run simply in containers).
+2.  Install dependencies:
 
-2. Ставим зависимости
+<!-- end list -->
 
 ```
 pnpm i
 ```
 
-## Для запуска
+## To Run
 
-### prod
+### Production (prod)
 
-1. Заходим в /env/, смотрим .env.example
-2. Создаем .env.prod с наполнением как в .env.example
+1.  Navigate to the `/env/` directory and examine `.env.example`.
 
-По формату - s - секунды, m - минуты, и т.д. h, d, w
+2.  Create an `.env.prod` file with content similar to `.env.example`.
 
-```
-REFRESH_EXPIRED_IN=7d
-ACCESS_EXPIRED_IN=1h
-```
+    The format for time durations is as follows: `s` for seconds, `m` for minutes, `h` for hours, `d` for days, `w` for weeks.
 
-3. Запускаем
+    ```
+    REFRESH_EXPIRED_IN=7d
+    ACCESS_EXPIRED_IN=1h
+    ```
 
-Если есть pnpm
+3.  Launch the application:
 
-```
-pnpm docker:prod:build
-pnpm docker:prod:run
-```
+    If you have `pnpm`:
 
-Если pnpm нет  
-Из корня проекта:
+    ```
+    pnpm docker:prod:build
+    pnpm docker:prod:run
+    ```
 
-```
-docker compose -f ./docker/compose.prod.yaml build
-docker compose -f ./docker/compose.prod.yaml --env-file ./env/.env.prod up -d
-```
+    If you don't have `pnpm`:  
+    From the project root:
 
-Запустится docker compose приложуха на указанных в env портах
+    ```
+    docker compose -f ./docker/compose.prod.yaml build
+    docker compose -f ./docker/compose.prod.yaml --env-file ./env/.env.prod up -d
+    ```
 
-```
-http://localhost:${APP_PORT}/api
-http://localhost:${APP_PORT}/swagger - Swagger
-```
+    This will start the Docker Compose application on the ports specified in your environment variables.
 
-### dev
+    ```
+    http://localhost:${APP_PORT}/api
+    http://localhost:${APP_PORT}/swagger - Swagger
+    ```
 
-1. В /env/ создаем .env.dev по примеру .env.example
-2. Собираем докер образ Postgres'а
+### Development (dev)
 
-```
-pnpm:dev:build
-pnpm:dev:run
-```
-
-3. Генерируем prisma-client
-
-```
-pnpm prisma generate
-```
-
-4. Применяем миграции
-
-```
-pnpm migration:dev
-```
-
-5. Запускаем приложение в watch-режиме
-
-```
-pnpm start:dev
-```
+1.  In the `/env/` directory, create an `.env.dev` file based on the `.env.example` template.
+2.  Build the Postgres Docker image:
+    ```
+    pnpm docker:dev:build
+    pnpm docker:dev:run
+    ```
+3.  Generate the Prisma client:
+    ```
+    pnpm prisma generate
+    ```
+4.  Apply migrations:
+    ```
+    pnpm migration:dev
+    ```
+5.  Start the application in watch mode:
+    ```
+    pnpm start:dev
+    ```
 
 Endpoints:
 
@@ -83,31 +80,24 @@ http://localhost:${APP_PORT}/api
 http://localhost:${APP_PORT}/swagger - Swagger
 ```
 
-### test
+### Test
 
-1. В /env/ создаем .env.test по примеру .env.example
-2. Собираем докер образ Postgres'а
-
-```
-pnpm:test:build
-pnpm:test:run
-```
-
-3. Генерируем prisma-client
-
-```
-pnpm prisma generate
-```
-
-4. Применяем миграции
-
-```
-pnpm migration:test
-```
-
-5. Запускаем тесты
-
-```
-pnpm test # module tests
-pnpm test:e2e # end-to-end tests
-```
+1.  In the `/env/` directory, create an `.env.test` file based on the `.env.example` template.
+2.  Build the Postgres Docker image:
+    ```
+    pnpm docker:test:build
+    pnpm docker:test:run
+    ```
+3.  Generate the Prisma client:
+    ```
+    pnpm prisma generate
+    ```
+4.  Apply migrations:
+    ```
+    pnpm migration:test
+    ```
+5.  Run tests:
+    ```
+    pnpm test # module tests
+    pnpm test:e2e # end-to-end tests
+    ```
